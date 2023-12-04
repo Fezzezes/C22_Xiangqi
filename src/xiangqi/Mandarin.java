@@ -15,6 +15,9 @@ public class Mandarin extends Piece{
 
 
 
-        return false;
+        //un déplacement de '1' en diagonale ==  '2'
+        System.out.println("Déplacement == '2' : "+(norme(depart, arrivee) == 2));
+
+        return norme(depart, arrivee) == 2 && estDansPalais(depart,arrivee);
     }
 }
