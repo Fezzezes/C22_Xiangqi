@@ -11,6 +11,8 @@ public class Cavalier extends Piece{
 
     //•	Comme aux échecs habituels, il se déplace d’abord d’une intersection en ligne droite, puis d’une case en diagonale.
 
-        return false;
+        //Un déplacement de '1' plus 1 diagonale =
+        System.out.println("Déplacement == : "+(norme(depart, arrivee)));
+        return (norme(depart, arrivee) == 5 ||norme(depart, arrivee) == 0 );
     }
 }

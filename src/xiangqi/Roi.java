@@ -13,10 +13,8 @@ public class Roi extends Piece{
         //•	Doit demeurer dans son palais ( dépendant de sa couleur )
         //•	Il se déplace de ‘1’
 
-
         //retourne faux si le déplacement est plus grand qu'un '1'
         System.out.println("Déplacement == '1' : "+(norme(depart, arrivee) == 1 ||norme(depart, arrivee) == 0 ));
-
         return (norme(depart, arrivee) == 1 ||norme(depart, arrivee) == 0 ) && estDansPalais(depart,arrivee);
     }
 }
