@@ -13,8 +13,8 @@ public class TestRoi {
     public void beforeEach()
     {
         System.out.println("----------------------- Next Test ---------------------");
-        roiNoir = new Roi("r", "noir");
-        roiRouge = new Roi("r", "rouge");
+        roiNoir = new Roi("rn", "noir");
+        roiRouge = new Roi("rr", "rouge");
     }
 
     @Test

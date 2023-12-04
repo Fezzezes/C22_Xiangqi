@@ -15,8 +15,8 @@ public class TestMandarin {
     public void beforeEach()
     {
         System.out.println("----------------------- Next Test ---------------------");
-        noir = new Mandarin("r", "noir");
-        rouge = new Mandarin("r", "rouge");
+        noir = new Mandarin("mn", "noir");
+        rouge = new Mandarin("mr", "rouge");
     }
 
     @Test

@@ -12,7 +12,7 @@ public class Mandarin extends Piece{
     //•	Il se déplace d’une intersection en diagonale à la fois
     //•	Lui aussi doit demeurer dans son palais d’origine
     //•	Il se déplace de ‘1’
-        
+
         //un déplacement de '1' en diagonale ==  '2'm '0' représente un mouvement sur sous-même qui est aussi valide
         System.out.println("Déplacement == '2' : "+(norme(depart, arrivee) == 2 ||norme(depart, arrivee) == 0 ));
 
