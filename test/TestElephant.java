@@ -1,9 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import xiangqi.Elephant;
-import xiangqi.Mandarin;
 import xiangqi.Position;
-import xiangqi.Roi;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -41,15 +40,15 @@ public class TestElephant {
     }
 
     @Test
-    public void deplacamentInvalideHorizontaleNoir(){
+    public void deplacamentInvalideHorizontalNoir(){
         assertEquals(false, noir.estValide(new Position(0,2),new Position(0,4)));
     }
     @Test
-    public void deplacamentInvalideVerticaleNoir(){
+    public void deplacamentInvalideVerticalNoir(){
         assertEquals(false, noir.estValide(new Position(4,6),new Position(2,6)));
     }
     @Test
-    public void deplacamentInvalideTropCourNoir(){
+    public void deplacamentInvalideTropCourtNoir(){
         assertEquals(false, noir.estValide(new Position(0,6),new Position(1,5)));
     }
     @Test
@@ -59,12 +58,12 @@ public class TestElephant {
 
 
     @Test
-    public void deplacamentValideEnDiagonaleGaucheRouge(){
+    public void deplacamentValideEnDiagonalGaucheRouge(){
         assertEquals(true, rouge.estValide(new Position(9,2),new Position(7,0)));
     }
 
     @Test
-    public void deplacamentValideEnDiagonaleDroiteRouge(){
+    public void deplacamentValideEnDiagonalDroiteRouge(){
         assertEquals(true, rouge.estValide(new Position(9,2),new Position(7,4)));
     }
 

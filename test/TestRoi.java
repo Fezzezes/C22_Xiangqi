@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-
 import xiangqi.Position;
 import xiangqi.Roi;
 
@@ -42,7 +41,7 @@ public class TestRoi {
     }
 
     @Test
-    public void deplacamentInvalideTropGrandDansPalaisNoir(){
+    public void deplacamentInvalideTropLongDansPalaisNoir(){
         assertEquals(false, roiNoir.estValide(new Position(0,3),new Position(0,5)));
     }
 
@@ -72,7 +71,7 @@ public class TestRoi {
     }
 
     @Test
-    public void deplacamentInvalideTropGrandDansPalaisRouge(){
+    public void deplacamentInvalideTropLongDansPalaisRouge(){
         assertEquals(false, roiRouge.estValide(new Position(7,3),new Position(7,5)));
     }
 

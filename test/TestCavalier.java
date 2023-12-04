@@ -63,12 +63,12 @@ public class TestCavalier {
 
 
     @Test
-    public void deplacamentInvalideHorizontale(){
+    public void deplacamentInvalideHorizontal(){
         assertEquals(false, noir.estValide(new Position(2,4),new Position(2,6)));
     }
 
     @Test
-    public void deplacamentInvalideVerticale(){
+    public void deplacamentInvalideVertical(){
         assertEquals(false, noir.estValide(new Position(2,4),new Position(0,4)));
     }
 

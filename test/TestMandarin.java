@@ -2,7 +2,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import xiangqi.Mandarin;
 import xiangqi.Position;
-import xiangqi.Roi;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -44,7 +43,7 @@ public class TestMandarin {
     }
 
     @Test
-    public void deplacamentInvalideTropGrandDansPalaisNoir(){
+    public void deplacamentInvalideTropLongDansPalaisNoir(){
         assertEquals(false, noir.estValide(new Position(0,5),new Position(2,3)));
     }
 
@@ -69,7 +68,7 @@ public class TestMandarin {
     }
 
     @Test
-    public void deplacamentInvalideTropGrandDansPalaisRouge(){
+    public void deplacamentInvalideTropLongDansPalaisRouge(){
         assertEquals(false, rouge.estValide(new Position(7,3),new Position(5,9)));
     }
 
