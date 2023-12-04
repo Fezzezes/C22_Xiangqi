@@ -26,7 +26,7 @@ public class Pion extends Piece{
                 return false;
         else if(this.getCouleur().equals("rouge") && arrivee.getLigne() > depart.getLigne())
                 return false;
-        
+
         //Seul un mouvement d'avancement ou un mouvement horizontal après la rivière de '1' peuvent atteindre ce point
         return true;
     }
