@@ -13,7 +13,37 @@ public class Pion extends Piece{
     //•	De l’autre côté de la rivière, il peut avancer d’une intersection à la fois en ligne droite ou sur les côtés
     //•	Il ne peut pas reculer contrairement aux autres pièces
 
-        return false;
+        //un pion peut seulement avancer de '1'(ou sur place)
+        if(norme(depart, arrivee) != 1 && norme(depart, arrivee) != 0 )
+        {
+            System.out.println("Déplacement trop long");
+            return false;
+        }
+
+        if(this.getCouleur().equals("noir"))
+        {
+            //Le pion est noir
+            //un pion ne peut pas reculer
+            if(arrivee.getLigne() < depart.getLigne())
+                return false;
+            //un mouvement horizontale est seulement accepte après la rivière
+            else if (arrivee.getLigne() == depart.getLigne() && arrivee.getLigne() < 4)
+                return false;
+
+        }
+        else
+        {
+            //Le pion est rouge
+            //un pion ne peut pas reculer
+            if(arrivee.getLigne() > depart.getLigne())
+                return false;
+            //un mouvement horizontale est seulement accepte après la rivière
+            else if (arrivee.getLigne() == depart.getLigne() && arrivee.getLigne() > 5)
+                return false;
+        }
+        
+        //Seul un mouvement d'avancement ou un mouvement horizontal après la rivière de '1' peuvent atteindre ce point
+        return true;
     }
 
 }
