@@ -20,6 +20,10 @@ public class TestMandarin {
     }
 
     @Test
+    public void deplacamentValideSurPlace(){
+        assertEquals(true, noir.estValide(new Position(1,4),new Position(1,4)));
+    }
+    @Test
     public void deplacamentValideDiagonaleDansPalaisNoir(){
         assertEquals(true, noir.estValide(new Position(1,4),new Position(0,3)));
     }

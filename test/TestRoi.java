@@ -18,6 +18,10 @@ public class TestRoi {
     }
 
     @Test
+    public void deplacamentValideSurPlace(){
+        assertEquals(true, roiNoir.estValide(new Position(1,4),new Position(1,4)));
+    }
+    @Test
     public void deplacamentValideHorizontalDansPalaisNoir(){
         assertEquals(true, roiNoir.estValide(new Position(1,4),new Position(1,5)));
     }
