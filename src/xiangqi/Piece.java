@@ -56,7 +56,30 @@ public abstract class Piece {
      */
     public double norme (Position depart, Position arrivee)
     {
+        //un déplacement de '1' à l'horizontal ou à la verticale donnera TOUJOURS '1'
+        //un déplacement de '1' à la diagonale donnera TOUJOURS '2'
         return Math.pow((depart.getLigne()-arrivee.getLigne()), 2)+ Math.pow((depart.getColonne() - arrivee.getColonne()),2);
+    }
+
+    public boolean estDansPalais(Position depart, Position arrivee){
+        //Retourne Faux si le déplacement n'est pas dans le palais
+
+        System.out.println("Couleur: "+this.getCouleur());
+        System.out.println(arrivee.getColonne() +" < 3? : "+(arrivee.getColonne() < 3));
+        System.out.println(arrivee.getColonne() +" > 5? : "+(arrivee.getColonne() > 5));
+        System.out.println(arrivee.getLigne() +" < "+(arrivee.getLigne() < 7)+"? : "+(arrivee.getLigne() < 7));
+        System.out.println(arrivee.getLigne() +" > "+(arrivee.getLigne() > 9)+"? : "+(arrivee.getLigne() > 9));
+
+        if((arrivee.getColonne() < 3 || arrivee.getColonne() > 5) )
+            return false;
+
+        if(this.getCouleur().equals("noir") && arrivee.getLigne() > 2)
+            return false;
+
+        else if(this.getCouleur().equals("rouge") && arrivee.getLigne() < 7)
+            return false;
+        else
+            return true;
     }
 
     /* méthode abstraite à implémenter dans chacune des sous - classes */
