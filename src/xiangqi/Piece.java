@@ -61,7 +61,7 @@ public abstract class Piece {
         return Math.pow((depart.getLigne()-arrivee.getLigne()), 2)+ Math.pow((depart.getColonne() - arrivee.getColonne()),2);
     }
 
-    public boolean estDansPalais(Position depart, Position arrivee){
+    public boolean estDansPalais(Position arrivee){
         //Retourne Faux si le déplacement n'est pas dans le palais
 
         System.out.println("Couleur: "+this.getCouleur());
@@ -80,6 +80,17 @@ public abstract class Piece {
             return false;
         else
             return true;
+    }
+
+    public boolean traverseLaRiviere(Position arrivee){
+
+        //La rivière ne peut être traversé, dependant de la couleur
+        if(this.getCouleur().equals("noir") && arrivee.getLigne() > 4)
+            return true;
+        else if (this.getCouleur().equals("rouge") && arrivee.getLigne() < 5)
+            return true;
+        else
+            return false;
     }
 
     /* méthode abstraite à implémenter dans chacune des sous - classes */

@@ -15,32 +15,17 @@ public class Pion extends Piece{
 
         //un pion peut seulement avancer de '1'(ou sur place)
         if(norme(depart, arrivee) != 1 && norme(depart, arrivee) != 0 )
-        {
-            System.out.println("Déplacement trop long");
             return false;
-        }
 
-        if(this.getCouleur().equals("noir"))
-        {
-            //Le pion est noir
-            //un pion ne peut pas reculer
-            if(arrivee.getLigne() < depart.getLigne())
-                return false;
-            //un mouvement horizontale est seulement accepte après la rivière
-            else if (arrivee.getLigne() == depart.getLigne() && arrivee.getLigne() < 4)
-                return false;
+        //un mouvement horizontale est seulement accepte après la rivière
+        else if (arrivee.getLigne() == depart.getLigne() && !traverseLaRiviere(arrivee))
+            return false;
 
-        }
-        else
-        {
-            //Le pion est rouge
-            //un pion ne peut pas reculer
-            if(arrivee.getLigne() > depart.getLigne())
+        //un pion ne peut pas reculer
+        if(this.getCouleur().equals("noir") && arrivee.getLigne() < depart.getLigne())
                 return false;
-            //un mouvement horizontale est seulement accepte après la rivière
-            else if (arrivee.getLigne() == depart.getLigne() && arrivee.getLigne() > 5)
+        else if(this.getCouleur().equals("rouge") && arrivee.getLigne() > depart.getLigne())
                 return false;
-        }
         
         //Seul un mouvement d'avancement ou un mouvement horizontal après la rivière de '1' peuvent atteindre ce point
         return true;

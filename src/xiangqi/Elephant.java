@@ -13,11 +13,8 @@ public class Elephant extends Piece{
     //•	Se déplace de deux intersections DIAGONALES à la fois
 
         //La rivière ne peut être traversé, dependant de la couleur
-        if(this.getCouleur().equals("noir") && arrivee.getLigne() > 4)
+        if(traverseLaRiviere(arrivee))
             return false;
-        else if (this.getCouleur().equals("rouge") && arrivee.getLigne() < 5)
-            return false;
-
         //un déplacement en diagonale de '2' aura toujours une distance de '8'
         System.out.println("Déplacement == '8' : "+(norme(depart, arrivee) == 8 ||norme(depart, arrivee) == 0 ));
 

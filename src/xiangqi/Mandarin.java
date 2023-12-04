@@ -16,6 +16,6 @@ public class Mandarin extends Piece{
         //un déplacement de '1' en diagonale ==  '2'm '0' représente un mouvement sur sous-même qui est aussi valide
         System.out.println("Déplacement == '2' : "+(norme(depart, arrivee) == 2 ||norme(depart, arrivee) == 0 ));
 
-        return (norme(depart, arrivee) == 2 ||norme(depart, arrivee) == 0 ) && estDansPalais(depart,arrivee);
+        return (norme(depart, arrivee) == 2 ||norme(depart, arrivee) == 0 ) && estDansPalais(arrivee);
     }
 }

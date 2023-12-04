@@ -15,6 +15,6 @@ public class Roi extends Piece{
 
         //retourne faux si le déplacement est plus grand qu'un '1'
         System.out.println("Déplacement == '1' : "+(norme(depart, arrivee) == 1 ||norme(depart, arrivee) == 0 ));
-        return (norme(depart, arrivee) == 1 ||norme(depart, arrivee) == 0 ) && estDansPalais(depart,arrivee);
+        return (norme(depart, arrivee) == 1 ||norme(depart, arrivee) == 0 ) && estDansPalais(arrivee);
     }
 }
