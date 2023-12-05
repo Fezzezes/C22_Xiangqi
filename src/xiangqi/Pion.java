@@ -14,7 +14,7 @@ public class Pion extends Piece{
     //•	Il ne peut pas reculer contrairement aux autres pièces
 
         //un pion peut seulement avancer de '1'(ou sur place)
-        if(norme(depart, arrivee) != 1 && norme(depart, arrivee) != 0 )
+        if(norme(depart, arrivee) > 1 )
             return false;
 
         //un mouvement horizontale est seulement accepte après la rivière
