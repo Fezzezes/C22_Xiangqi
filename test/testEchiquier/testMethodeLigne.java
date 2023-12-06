@@ -1,6 +1,6 @@
 package testEchiquier;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import xiangqi.echiquier.Echiquier;
 import xiangqi.piece.Bombarde;
@@ -24,56 +24,46 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
         //Chemin Ligne droite --------------------------------------------------------------------
         @Test
-        public void testValideLigneVersLaGauche1(){
-            assertEquals(true, echiquier.cheminPossible(new Position(2,7), new Position(2,8)));
-        }
-        @Test
-        public void testValideLigneVersLaGauche9(){
-            assertEquals(true, echiquier.cheminPossible(new Position(1,0), new Position(1,8)));
-        }
-
-        @Test
         public void testValideLigneVersLaDroite1(){
-            assertEquals(true, echiquier.cheminPossible(new Position(2,7), new Position(2,6)));
+            assertEquals(0, echiquier.pieceSurLaligne(new Position(2,7), new Position(2,8)));
+        }
+        @Test
+        public void testValideLigneVersLaDroite8(){
+            assertEquals(0, echiquier.pieceSurLaligne(new Position(1,0), new Position(1,8)));
         }
 
         @Test
-        public void testValideLigneVersLaDroite9(){
-            assertEquals(true, echiquier.cheminPossible(new Position(1,8), new Position(1,0)));
+        public void testValideLigneVersLaGauche1(){
+            assertEquals(0, echiquier.pieceSurLaligne(new Position(2,7), new Position(2,6)));
         }
 
         @Test
-        public void testValideLigneVersLaGaucheSurUnEnnemi(){
-
-            echiquier.getJeu()[2][8].setPiece(new Bombarde("B","rouge"));
-
-            assertEquals(true, echiquier.cheminPossible(new Position(2,8), new Position(2,7)));
-        }
-
-        @Test
-        public void testValideLigneVersLaDroiteSurUnEnnemi(){
-            echiquier.getJeu()[7][8].setPiece(new Bombarde("B","noir"));
-            assertEquals(true, echiquier.cheminPossible(new Position(7,7), new Position(7,8)));
+        public void testValideLigneVersLaGauche8(){
+            assertEquals(0, echiquier.pieceSurLaligne(new Position(1,8), new Position(1,0)));
         }
 
 
-
         @Test
-        public void testInvalideLigneVersLaGauche1(){
-            assertEquals(false, echiquier.cheminPossible(new Position(0,8), new Position(0,7)));
-        }
-        @Test
-        public void testInvalideLigneVersLaGauche9(){
-            assertEquals(false, echiquier.cheminPossible(new Position(0,8), new Position(0,0)));
+        public void testInvalideLigneVersLaDroite8(){
+            assertEquals(7, echiquier.pieceSurLaligne(new Position(0,0), new Position(0,8)));
         }
 
+
         @Test
-        public void testInvalideLigneVersLaDroite1(){
-            assertEquals(false, echiquier.cheminPossible(new Position(0,0), new Position(0,1)));
+        public void testInvalideLigneVersLaGauche8(){
+            assertEquals(7, echiquier.pieceSurLaligne(new Position(0,8), new Position(0,0)));
+        }
+
+
+        @Test
+        public void testInvalideBlockeParEnnemi(){
+            echiquier.getJeu()[2][4].setPiece(new Bombarde("B","rouge"));
+            assertEquals(1, echiquier.pieceSurLaligne(new Position(2,1), new Position(2,6)));
         }
 
         @Test
-        public void testInvalideLigneVersLaDroite9(){
-            assertEquals(false, echiquier.cheminPossible(new Position(0,0), new Position(0,8)));
+        public void testInvalideBlockeParAmi(){
+            echiquier.getJeu()[2][4].setPiece(new Bombarde("B","noir"));
+            assertEquals(1, echiquier.pieceSurLaligne(new Position(2,1), new Position(2,6)));
         }
 }

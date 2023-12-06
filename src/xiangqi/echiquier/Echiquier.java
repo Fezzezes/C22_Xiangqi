@@ -27,7 +27,7 @@ public class Echiquier implements MethodesEchiquier{
         }
 
         debuter();
-        afficher();
+//        afficher();
 
     }
     @Override
@@ -107,21 +107,57 @@ public class Echiquier implements MethodesEchiquier{
 
 
 
-    private int pieceSurLaligne(Position depart, Position arrivee){
-
-        int pieceSurLigne = 0;
+    public int pieceSurLaligne(Position depart, Position arrivee){
 
         System.out.println("["+depart.getLigne()+", "+depart.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
 
-            for(int colonne = depart.getColonne()+1; colonne < arrivee.getColonne(); colonne++) {
+        //détermine le nombre de piece ]ENTRE[ le depart et l'arrivée
+        int pieceSurLigne = 0;
 
-                if(estOccupe(depart.getLigne(), colonne))
-                    pieceSurLigne++;
+        //Le loop doit toujours aller de gauche à droite
+        int indexDepart = depart.getColonne()+1;
+        int indexFin = arrivee.getColonne();
+        
+        if(depart.getColonne() > arrivee.getColonne())
+        {
+            indexDepart = arrivee.getColonne()+1;
+            indexFin = depart.getColonne();
+        }
 
-            }
-            
-        System.out.println("Il y a "+pieceSurLigne+" piece sur la ligne");
-      return pieceSurLigne;
+        //loop de gauche à droite sur la ligne à partir de l'index de départ
+        for(int colonne = indexDepart; colonne < indexFin ; colonne++) {
+
+            if(estOccupe(depart.getLigne(), colonne))
+                pieceSurLigne++;
+
+        }
+
+        System.out.println("Il y a "+pieceSurLigne+" pièces entre le départ et l'arrivée (horizontal)");
+        return pieceSurLigne;
+    }
+
+    public int pieceSurLaColonne(Position depart, Position arrivee){
+
+        System.out.println("["+depart.getLigne()+", "+depart.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
+        int pieceSurLaColonne= 0;
+
+        //Le loop doit toujours aller de gauche à droite
+        int indexDepart = depart.getLigne()+1;
+        int indexFin = arrivee.getLigne();
+        if(depart.getLigne() > arrivee.getLigne())
+        {
+            indexDepart = arrivee.getLigne()+1;
+            indexFin = depart.getLigne();
+        }
+
+        for(int ligne = indexDepart; ligne< indexFin; ligne++) {
+
+            if(estOccupe(ligne, depart.getColonne()))
+                pieceSurLaColonne++;
+        }
+
+        System.out.println("Il y a "+pieceSurLaColonne+" pièces entre le départ et l'arrivée (vertical)");
+        return pieceSurLaColonne;
     }
 
 
