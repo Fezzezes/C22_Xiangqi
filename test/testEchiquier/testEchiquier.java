@@ -2,6 +2,7 @@ package testEchiquier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import xiangqi.echiquier.Echiquier;
+import xiangqi.piece.Position;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,4 +17,7 @@ public class testEchiquier {
     @Test
     public void constructeur(){
     }
+
+
+
 }

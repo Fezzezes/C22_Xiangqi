@@ -22,4 +22,5 @@ public class Intersection {
 
         return piece != null?(this.piece.getNom() +this.piece.getCouleurAbrege()): "--";
     }
+
 }

@@ -1,5 +1,7 @@
 package xiangqi.piece;
 
+import xiangqi.echiquier.Echiquier;
+
 /**
  * classe abstraite Piece servant de point de départ pour tous les types de pièces d'un jeu de Xiangqi
  * @author Éric Labonté
@@ -61,6 +63,9 @@ public abstract class Piece {
         return Math.pow((depart.getLigne()-arrivee.getLigne()), 2)+ Math.pow((depart.getColonne() - arrivee.getColonne()),2);
     }
 
+    /* méthode abstraite à implémenter dans chacune des sous - classes */
+    public abstract boolean estValide (Position depart, Position arrivee);
+
     //----------------------------------------------------Util---------------------------------------
 
     public boolean estDansPalais(Position arrivee){
@@ -96,10 +101,5 @@ public abstract class Piece {
     }
 
     public String getCouleurAbrege(){return this.couleur.equals("noir")? "n":"r";}
-
-    /* méthode abstraite à implémenter dans chacune des sous - classes */
-
-    public abstract boolean estValide (Position depart, Position arrivee);
-
 
 }
