@@ -105,6 +105,85 @@ public class Echiquier implements MethodesEchiquier{
         return pieceDansLeChemin <= 0;
     }
 
+    public int cheminPossible2(Position depart , Position arrivee){
+
+        int pieceDansLeChemin = 0;
+
+        int incrementeLigne = trouveIncrementation(depart.getLigne(), arrivee.getLigne());
+        int incrementeColonne = trouveIncrementation(depart.getColonne(), arrivee.getColonne());
+
+
+        if(estUnCavalier(depart,arrivee)){
+            //Pour le cavalier, seulement évaler le premier déplace (horizontal ou vertical), et la méthode estOccupeParAmi(depart, arrivee) à
+            //la fin s'occupera de la position en diagonale
+
+            //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            //increment/ seulement l<horizontale OU le verticale, pas les deux
+            if(estOccupe(depart.getLigne() + incrementeLigne, depart.getColonne() + incrementeColonne))
+                pieceDansLeChemin++;
+            //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        }
+        else {
+            //prochaine position dans la chaine a vérifié
+            Position prochainePosition = new Position(depart.getLigne() + incrementeLigne, depart.getColonne() + incrementeColonne);
+            //examine de façon recursive chaque intersection ENTRE le point de départ et le point d'arrivée, retourne le compte
+            pieceDansLeChemin += pieceParPosition(prochainePosition, arrivee, incrementeLigne, incrementeColonne, pieceDansLeChemin);
+        }
+
+//        System.out.println("#--- Position d'arrivée valide? ---#");
+//        //invalide si la derniere position est occupé par un ami
+//        if(estOccupeParAmi(depart, arrivee))
+//            pieceDansLeChemin=1000;
+
+        return pieceDansLeChemin;
+    }
+
+    public int trouveIncrementation(int depart, int arrivee){
+
+        //si la valeur de départ est plus grand, l'incrementation sera négative (la piece se dirigera vers la gauche ou vers le haut)
+        if(depart > arrivee)
+            return -1;
+        //si la valeur de départ est plus petite, l'incrementation sera positive (la piece se dirigera vers la droite ou vers le bas)
+        else if (depart < arrivee)
+            return 1;
+        //si la valeur de départ est égale, aucune incrementation, (la pièce bougera seulement sur l'horizontale ou la verticale)
+        else
+            return 0;
+    }
+
+    public boolean estUnCavalier(Position depart , Position arrivee){
+
+        int differenceLigne = depart.getLigne() - arrivee.getLigne();
+        int differenceColonne = depart.getColonne() - arrivee.getColonne();
+
+        boolean estPasChar = (depart.getLigne() != arrivee.getLigne() && depart.getColonne()  !=  arrivee.getColonne());
+
+        return (Math.abs(differenceLigne) - Math.abs(differenceColonne) != 0 && estPasChar);
+    }
+
+
+    public int pieceParPosition(Position actuelle, Position arrivee, int incrLigne, int incrColonne, int compte ){
+
+        //nous sommes arrivées à la dernière position de la chaine recursive
+        if(actuelle.getLigne() == arrivee.getLigne() && actuelle.getColonne() == arrivee.getColonne())
+        {
+            System.out.println("---");
+            System.out.println("Il y a "+compte+" pièces entre le départ et l'arrivée");
+            //retourne le compte de pieces trouvées entre la position de départ et la position d'arrivée
+            return compte;
+        }
+
+        System.out.println("["+actuelle.getLigne()+", "+actuelle.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
+        //la position actuelle est-elle occupé, si oui ajoute au compte
+        if(estOccupe(actuelle.getLigne(), actuelle.getColonne()))
+            compte++;
+
+        //prochaine position dans la chaine a vérifié
+        Position prochainePosition = new Position(actuelle.getLigne()+incrLigne, actuelle.getColonne()+incrColonne);
+
+        //continu recursivement avec la prochaine position
+        return pieceParPosition(prochainePosition, arrivee,incrLigne, incrColonne, compte);
+    }
 
 
     public int pieceSurLaligne(Position depart, Position arrivee){
