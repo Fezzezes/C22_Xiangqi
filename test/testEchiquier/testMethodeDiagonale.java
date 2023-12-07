@@ -25,95 +25,127 @@ public class testMethodeDiagonale {
 
     @Test
     public void testValideHautVersGauche(){
-        assertEquals(0, echiquier.cheminPossible2(new Position(5,2), new Position(7,0)));
+        assertEquals(true, echiquier.cheminPossible(new Position(5,2), new Position(7,0)));
     }
 
     @Test
     public void testValideHautVersDroite(){
-        assertEquals(0, echiquier.cheminPossible2(new Position(5,2), new Position(7,4)));
+        assertEquals(true, echiquier.cheminPossible(new Position(5,2), new Position(7,4)));
     }
 
     @Test
     public void testValideBasVersGauche(){
-        assertEquals(0, echiquier.cheminPossible2(new Position(9,2), new Position(7,0)));
+        assertEquals(true, echiquier.cheminPossible(new Position(9,2), new Position(7,0)));
     }
 
     @Test
     public void testValideBasVersDroite(){
-        assertEquals(0, echiquier.cheminPossible2(new Position(9,2), new Position(7,4)));
+        assertEquals(true, echiquier.cheminPossible(new Position(9,2), new Position(7,4)));
     }
 
     @Test
     public void testValideGaucheVersHaut(){
-        assertEquals(0, echiquier.cheminPossible2(new Position(7,0), new Position(5,2)));
+        assertEquals(true, echiquier.cheminPossible(new Position(7,0), new Position(5,2)));
     }
 
     @Test
     public void testValideGaucheVersBas(){
-        assertEquals(0, echiquier.cheminPossible2(new Position(7,0), new Position(9,2)));
+        echiquier.getJeu()[7][0].setPiece(new Bombarde("B","noir"));
+        assertEquals(true, echiquier.cheminPossible(new Position(7,0), new Position(9,2)));
     }
 
     @Test
     public void testValideDroiteVersHaut(){
-        assertEquals(0, echiquier.cheminPossible2(new Position(7,4), new Position(5,2)));
+        assertEquals(true, echiquier.cheminPossible(new Position(7,4), new Position(5,2)));
     }
 
     @Test
     public void testValideDroiteVersBas(){
-        assertEquals(0, echiquier.cheminPossible2(new Position(7,4), new Position(9,2)));
+        echiquier.getJeu()[7][4].setPiece(new Bombarde("B","noir"));
+        assertEquals(true, echiquier.cheminPossible(new Position(7,4), new Position(9,2)));
     }
 
+    @Test
+    public void testValideDroiteVersHautSurEnnemi(){
+        echiquier.getJeu()[7][4].setPiece(new Bombarde("B","noir"));
+        echiquier.getJeu()[5][2].setPiece(new Bombarde("B","rouge"));
+        assertEquals(true, echiquier.cheminPossible(new Position(7,4), new Position(5,2)));
+    }
 
+    @Test
+    public void testValideDroiteVersBasSurEnnemi(){
+        echiquier.getJeu()[7][4].setPiece(new Bombarde("B","noir"));
+        echiquier.getJeu()[9][2].setPiece(new Bombarde("B","rouge"));
+        assertEquals(true, echiquier.cheminPossible(new Position(7,4), new Position(9,2)));
+    }
 
 
 
     @Test
     public void testInvalideHautVersGauche(){
         echiquier.getJeu()[6][1].setPiece(new Bombarde("B","rouge"));
-        assertEquals(1, echiquier.cheminPossible2(new Position(5,2), new Position(7,0)));
+        assertEquals(false, echiquier.cheminPossible(new Position(5,2), new Position(7,0)));
     }
 
     @Test
     public void testInvalideHautVersDroite(){
         echiquier.getJeu()[6][3].setPiece(new Bombarde("B","rouge"));
-        assertEquals(1, echiquier.cheminPossible2(new Position(5,2), new Position(7,4)));
+        assertEquals(false, echiquier.cheminPossible(new Position(5,2), new Position(7,4)));
     }
 
     @Test
     public void testInvalideBasVersGauche(){
         echiquier.getJeu()[8][1].setPiece(new Bombarde("B","rouge"));
-        assertEquals(1, echiquier.cheminPossible2(new Position(9,2), new Position(7,0)));
+        assertEquals(false, echiquier.cheminPossible(new Position(9,2), new Position(7,0)));
     }
 
     @Test
     public void testInvalideBasVersDroite(){
         echiquier.getJeu()[8][3].setPiece(new Bombarde("B","rouge"));
-        assertEquals(1, echiquier.cheminPossible2(new Position(9,2), new Position(7,4)));
+        assertEquals(false, echiquier.cheminPossible(new Position(9,2), new Position(7,4)));
     }
 
     @Test
     public void testInvalideGaucheVersHaut(){
         echiquier.getJeu()[6][1].setPiece(new Bombarde("B","rouge"));
-        assertEquals(1, echiquier.cheminPossible2(new Position(7,0), new Position(5,2)));
+        assertEquals(false, echiquier.cheminPossible(new Position(7,0), new Position(5,2)));
     }
 
     @Test
     public void testInvalideGaucheVersBas(){
         echiquier.getJeu()[8][1].setPiece(new Bombarde("B","rouge"));
-        assertEquals(1, echiquier.cheminPossible2(new Position(7,0), new Position(9,2)));
+        assertEquals(false, echiquier.cheminPossible(new Position(7,0), new Position(9,2)));
     }
 
     @Test
     public void testInvalideDroiteVersHaut(){
         echiquier.getJeu()[6][3].setPiece(new Bombarde("B","rouge"));
-        assertEquals(1, echiquier.cheminPossible2(new Position(7,4), new Position(5,2)));
+        assertEquals(false, echiquier.cheminPossible(new Position(7,4), new Position(5,2)));
     }
 
     @Test
     public void testInvalideDroiteVersBas(){
         echiquier.getJeu()[8][3].setPiece(new Bombarde("B","rouge"));
-        assertEquals(1, echiquier.cheminPossible2(new Position(7,4), new Position(9,2)));
+        assertEquals(false, echiquier.cheminPossible(new Position(7,4), new Position(9,2)));
     }
+
+    @Test
+    public void testInvalideDroiteVersHautSurAmi(){
+        echiquier.getJeu()[7][4].setPiece(new Bombarde("B","noir"));
+        echiquier.getJeu()[5][2].setPiece(new Bombarde("B","noir"));
+        assertEquals(false, echiquier.cheminPossible(new Position(7,4), new Position(5,2)));
+    }
+
+    @Test
+    public void testInvalideDroiteVersBasSurAmi(){
+        echiquier.getJeu()[7][4].setPiece(new Bombarde("B","rouge"));
+        echiquier.getJeu()[9][2].setPiece(new Bombarde("B","rouge"));
+        assertEquals(false, echiquier.cheminPossible(new Position(7,4), new Position(9,2)));
+    }
+
+
+
+
 
 
 

@@ -46,4 +46,8 @@ public class Position
         this.colonne = colonne;
     }
 
+
+    public boolean equals(Position pos) {
+        return pos.getLigne() == this.ligne && pos.getColonne() == this.getColonne();
+    }
 }
