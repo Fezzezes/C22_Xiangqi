@@ -179,12 +179,12 @@ public class Echiquier implements MethodesEchiquier{
         //Une bombarde DOIT avoir une piece dans son chemin pour capturer
         if(pieceDansLeChemin == 1)
         {
-            System.out.println("La bombarde peut capturer? "+estOccupeParEnnemi(depart, arrivee));
+            System.out.println("Il y a-t-il un ennemi capturable par la bombarde? --------> "+estOccupeParEnnemi(depart, arrivee));
             return estOccupeParEnnemi(depart, arrivee);
         }
         else
         {
-            System.out.println("La bombarde peut se déplacé? "+estOccupeParEnnemi(depart, arrivee));
+            System.out.println("La bombarde peut se déplacé? --------> "+(pieceDansLeChemin < 1 && !estOccupe(arrivee)));
             //Sinon elle peut seulement ce déplacé sur une intersection vide avec un chemin non-obstrué
             return pieceDansLeChemin < 1 && !estOccupe(arrivee);
         }
@@ -224,7 +224,6 @@ public class Echiquier implements MethodesEchiquier{
         //continu recursivement avec la prochaine position
         return pieceParPosition(prochainePosition, arrivee,incrLigne, incrColonne, compte);
     }
-
 
 
 
@@ -285,7 +284,7 @@ public class Echiquier implements MethodesEchiquier{
         if(estOccupe(arrivee))
         {
             String couleurEnnemi = getIntersection(depart.getLigne(), depart.getColonne()).getPiece().getCouleur();
-            System.out.println("Cette pièce est-elle "+couleurEnnemi +"? -> "+(getIntersection(arrivee).getPiece().getCouleur().equals(couleurEnnemi)));
+            System.out.println("Cette pièce est-elle ennemi? -> "+!(getIntersection(arrivee).getPiece().getCouleur().equals(couleurEnnemi)));
             //l'intersection est occupé, retourne true si la piece sur celle-ci N'A PAS la même couleur que la piece en jeu
             return !(getIntersection(arrivee).getPiece().getCouleur().equals(couleurEnnemi));
         }
