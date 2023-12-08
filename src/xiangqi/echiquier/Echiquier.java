@@ -96,20 +96,22 @@ public class Echiquier implements MethodesEchiquier{
         System.out.println("["+depart.getLigne()+", "+depart.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
         int pieceDansLeChemin = 0;
 
-        int incrementeLigne = trouveIncrementation(depart.getLigne(), arrivee.getLigne());
-        int incrementeColonne = trouveIncrementation(depart.getColonne(), arrivee.getColonne());
+        //si la pièce bouge de |gauche à droite| ou de |droite à gauche| ou |ne bouge pas verticalement|
+        int incrementeLigne = trouveDirectionDeLaPiece(depart.getLigne(), arrivee.getLigne());
+        //si la pièce bouge de |haut en bas| ou de |bas en haut| ou |ne bouge pas horizontalement|
+        int incrementeColonne = trouveDirectionDeLaPiece(depart.getColonne(), arrivee.getColonne());
 
-
+        //le cavalier à une vérification spéciale
         if(getIntersection(depart).getPiece() instanceof Cavalier){
-            //Pour le cavalier, seulement évaler le premier déplace (horizontal ou vertical), et la méthode estOccupeParAmi(depart, arrivee) à
-            //la fin s'occupera de la position en diagonale
+            //Pour le cavalier, seulement évaluer le premier déplace (horizontal ou vertical), et la méthode estOccupeParAmi(depart, arrivee) à
+            //la fin s'occupera de la position d'arrivée en diagonale
 
             //incrementé seulement l'horizontale OU le verticale, pas les deux
             if(cavalierBougeVers(depart, arrivee).equals("ligne"))
                 incrementeColonne = 0;
             else
                 incrementeLigne = 0;
-
+            //regarde la prochaine position
             if(estOccupe(depart.getLigne() + incrementeLigne, depart.getColonne()+incrementeColonne))
                 pieceDansLeChemin++;
         }
@@ -117,7 +119,7 @@ public class Echiquier implements MethodesEchiquier{
             //prochaine position dans la chaine a vérifié
             Position prochainePosition = new Position(depart.getLigne() + incrementeLigne, depart.getColonne() + incrementeColonne);
             //examine de façon recursive chaque intersection ENTRE le point de départ et le point d'arrivée, retourne le compte
-            pieceDansLeChemin += pieceParPosition(prochainePosition, arrivee, incrementeLigne, incrementeColonne, pieceDansLeChemin);
+            pieceDansLeChemin += pieceSurPosition(prochainePosition, arrivee, incrementeLigne, incrementeColonne, pieceDansLeChemin);
         }
 
 
@@ -133,7 +135,7 @@ public class Echiquier implements MethodesEchiquier{
         return pieceDansLeChemin < 1 && !estOccupeParAmi(depart, arrivee);
     }
 
-    public int trouveIncrementation(int depart, int arrivee){
+    public int trouveDirectionDeLaPiece(int depart, int arrivee){
 
         //si la valeur de départ est plus grand, l'incrementation sera négative (la piece se dirigera vers la gauche ou vers le haut)
         if(depart > arrivee)
@@ -146,15 +148,6 @@ public class Echiquier implements MethodesEchiquier{
             return 0;
     }
 
-    public boolean estUnCavalier(Position depart , Position arrivee){
-
-        int differenceLigne = depart.getLigne() - arrivee.getLigne();
-        int differenceColonne = depart.getColonne() - arrivee.getColonne();
-
-        boolean estPasChar = (depart.getLigne() != arrivee.getLigne() && depart.getColonne()  !=  arrivee.getColonne());
-
-        return (Math.abs(differenceLigne) - Math.abs(differenceColonne) != 0 && estPasChar);
-    }
 
     public boolean deplacementBombarde(Position depart , Position arrivee, int pieceDansLeChemin){
 
@@ -179,32 +172,26 @@ public class Echiquier implements MethodesEchiquier{
         //détermine si une piece avance(true) ou recule(false) du point de vue des noirs
         int ligne = Math.abs(depart.getLigne() - arrivee.getLigne());
         int colonne = Math.abs(depart.getColonne() - arrivee.getColonne());
-//        System.out.println("La piece bouge vers la gauche: "+Math.abs(depart.getColonne() - arrivee.getColonne()));
-//        System.out.println("La piece bouge vers le bas: "+Math.abs(depart.getLigne() - arrivee.getLigne()));
 
         return ligne > colonne? "ligne": "colonne";
     }
 
-
-    public int pieceParPosition(Position actuelle, Position arrivee, int incrLigne, int incrColonne, int compte ){
+    public int pieceSurPosition(Position actuelle, Position arrivee, int incrLigne, int incrColonne, int compte ){
 
         //nous sommes arrivées à la dernière position de la chaine recursive
+        //retourne le compte de pieces trouvées entre la position de départ et la position d'arrivée
         if(actuelle.equals(arrivee))
-        {
-            //retourne le compte de pieces trouvées entre la position de départ et la position d'arrivée
             return compte;
-        }
 
-//        System.out.println("["+actuelle.getLigne()+", "+actuelle.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
         //la position actuelle est-elle occupé, si oui ajoute au compte
         if(estOccupe(actuelle))
             compte++;
 
-        //prochaine position dans la chaine a vérifié
+        //prochaine position a vérifié
         Position prochainePosition = new Position(actuelle.getLigne()+incrLigne, actuelle.getColonne()+incrColonne);
 
         //continu recursivement avec la prochaine position
-        return pieceParPosition(prochainePosition, arrivee,incrLigne, incrColonne, compte);
+        return pieceSurPosition(prochainePosition, arrivee,incrLigne, incrColonne, compte);
     }
 
 
@@ -235,21 +222,6 @@ public class Echiquier implements MethodesEchiquier{
         }
         System.out.println("");
     }
-
-    public void resetEchiquier(){
-        //utile pour les testes JUNIT
-        jeu = new Intersection[NOMBRE_LIGNES][NOMBRE_COLONNES];
-        //pour chaque ligne
-        for(int ligne = 0; ligne < NOMBRE_LIGNES; ligne++)
-        {
-            //pour chaque colonne
-            for(int colonne = 0; colonne <NOMBRE_COLONNES;colonne++ )
-            {
-                jeu[ligne][colonne] = new Intersection();
-            }
-        }
-    }
-
 
     public boolean estOccupe(int ligne, int colonne){
         //vérifie si la position est occupé
@@ -298,76 +270,14 @@ public class Echiquier implements MethodesEchiquier{
             return false;
     }
 
+    //    public boolean estUnCavalier(Position depart , Position arrivee){
+//
+//        int differenceLigne = depart.getLigne() - arrivee.getLigne();
+//        int differenceColonne = depart.getColonne() - arrivee.getColonne();
+//
+//        boolean estPasChar = (depart.getLigne() != arrivee.getLigne() && depart.getColonne()  !=  arrivee.getColonne());
+//
+//        return (Math.abs(differenceLigne) - Math.abs(differenceColonne) != 0 && estPasChar);
+//    }
 
-    // ---------------------------------------------- VIEUX
-
-
-    private boolean pieceAvance(Position depart , Position arrivee){
-        //détermine si une piece avance(true) ou recule(false) du point de vue des noirs
-        System.out.println("La piece bouge vers la gauche: "+(depart.getColonne() < arrivee.getColonne()));
-        System.out.println("La piece bouge vers le bas: "+(depart.getLigne() < arrivee.getLigne()));
-        return (depart.getLigne() < arrivee.getLigne() || depart.getColonne() < arrivee.getColonne());
-    }
-
-    public int pieceSurLaligne(Position depart, Position arrivee){
-
-        System.out.println("["+depart.getLigne()+", "+depart.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
-
-        //détermine le nombre de piece ]ENTRE[ le depart et l'arrivée
-        int pieceSurLigne = 0;
-
-        //Le loop doit toujours aller de gauche à droite
-        int indexDepart = depart.getColonne()+1;
-        int indexFin = arrivee.getColonne();
-
-        if(depart.getColonne() > arrivee.getColonne())
-        {
-            indexDepart = arrivee.getColonne()+1;
-            indexFin = depart.getColonne();
-        }
-
-        //loop de gauche à droite sur la ligne à partir de l'index de départ
-        for(int colonne = indexDepart; colonne < indexFin ; colonne++) {
-
-            if(estOccupe(depart.getLigne(), colonne))
-                pieceSurLigne++;
-
-        }
-
-        System.out.println("Il y a "+pieceSurLigne+" pièces entre le départ et l'arrivée (horizontal)");
-        return pieceSurLigne;
-    }
-
-    public int pieceSurLaColonne(Position depart, Position arrivee){
-
-        System.out.println("["+depart.getLigne()+", "+depart.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
-        int pieceSurLaColonne= 0;
-
-        //Le loop doit toujours aller de gauche à droite
-        int indexDepart = depart.getLigne()+1;
-        int indexFin = arrivee.getLigne();
-        if(depart.getLigne() > arrivee.getLigne())
-        {
-            indexDepart = arrivee.getLigne()+1;
-            indexFin = depart.getLigne();
-        }
-
-        for(int ligne = indexDepart; ligne< indexFin; ligne++) {
-
-            if(estOccupe(ligne, depart.getColonne()))
-                pieceSurLaColonne++;
-        }
-
-        System.out.println("Il y a "+pieceSurLaColonne+" pièces entre le départ et l'arrivée (vertical)");
-        return pieceSurLaColonne;
-    }
-
-
-    public boolean colonneEstLibre(Position depart , Position arrivee){
-        return false;
-    }
-
-    public boolean diagonaleEstLibre(Position depart , Position arrivee){
-        return false;
-    }
 }
