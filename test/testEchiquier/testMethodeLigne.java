@@ -1,6 +1,5 @@
 package testEchiquier;
 import org.junit.jupiter.api.*;
-
 import org.junit.jupiter.api.Test;
 import xiangqi.echiquier.Echiquier;
 import xiangqi.piece.Bombarde;

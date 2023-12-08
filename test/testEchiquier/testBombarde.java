@@ -3,7 +3,6 @@ package testEchiquier;
 import org.junit.jupiter.api.*;
 import xiangqi.echiquier.Echiquier;
 import xiangqi.piece.Bombarde;
-import xiangqi.piece.Cavalier;
 import xiangqi.piece.Char;
 import xiangqi.piece.Position;
 
