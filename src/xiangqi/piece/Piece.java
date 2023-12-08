@@ -100,6 +100,8 @@ public abstract class Piece {
             return false;
     }
 
-    public String getCouleurAbrege(){return this.couleur.equals("noir")? "n":"r";}
+    public String getCouleurAbrege(){
+        return this.couleur.equals("noir")? "n":"r";
+    }
 
 }

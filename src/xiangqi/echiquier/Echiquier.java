@@ -26,7 +26,7 @@ public class Echiquier implements MethodesEchiquier{
             }
         }
 
-        debuter();
+//        debuter();
 //        afficher();
 
     }
@@ -90,26 +90,6 @@ public class Echiquier implements MethodesEchiquier{
         return  getIntersection(p.getLigne(), p.getColonne());
     }
 
-//    @Override
-//    public  boolean cheminPossible (Position depart , Position arrivee){
-//        int pieceDansLeChemin = 0;
-//
-//
-//
-//
-//        pieceDansLeChemin += pieceSurLaligne(depart , arrivee);
-//
-//
-//        System.out.println("#---#");
-//        //invalide si la derniere position est occupé par un ami
-//        if(estOccupeParAmi(depart, arrivee))
-//            pieceDansLeChemin=1000;
-//
-//        System.out.println("");
-//
-//        return pieceDansLeChemin <= 0;
-//    }
-
     @Override
     public boolean cheminPossible(Position depart , Position arrivee){
 
@@ -120,7 +100,7 @@ public class Echiquier implements MethodesEchiquier{
         int incrementeColonne = trouveIncrementation(depart.getColonne(), arrivee.getColonne());
 
 
-        if(estUnCavalier(depart,arrivee)){
+        if(getIntersection(depart).getPiece() instanceof Cavalier){
             //Pour le cavalier, seulement évaler le premier déplace (horizontal ou vertical), et la méthode estOccupeParAmi(depart, arrivee) à
             //la fin s'occupera de la position en diagonale
 
@@ -141,7 +121,9 @@ public class Echiquier implements MethodesEchiquier{
         }
 
 
-        System.out.println("Il y a "+pieceDansLeChemin+" pièces entre le départ et l'arrivée");
+        System.out.println("Il y a { "+pieceDansLeChemin+" } pièces ENTRE le départ et l'arrivée");
+        System.out.println("---");
+        System.out.println("Arrivée: ");
 
         //Si il y a exactement une pièce entre la bombarde et son arrivée, vérifié que l'arrivé EST un ennemi
         if(getIntersection(depart).getPiece() instanceof Bombarde)
@@ -207,8 +189,6 @@ public class Echiquier implements MethodesEchiquier{
         //nous sommes arrivées à la dernière position de la chaine recursive
         if(actuelle.equals(arrivee))
         {
-            System.out.println("---");
-
             //retourne le compte de pieces trouvées entre la position de départ et la position d'arrivée
             return compte;
         }
@@ -236,9 +216,17 @@ public class Echiquier implements MethodesEchiquier{
     //----------------------------------------------------Util---------------------------------------
     public void afficher() {
 
+        System.out.printf("    ");
+        for(int colonne = 0; colonne < NOMBRE_COLONNES; colonne++ ) {
+            System.out.printf(String.valueOf(colonne) + "    ");
+        }
+        System.out.println("\n =============================================");
+
         for(int ligne = 0; ligne < NOMBRE_LIGNES; ligne++) {
             //pour chaque colonne
+            System.out.printf(String.valueOf(ligne)+ "|  ");
             for(int colonne = 0; colonne < NOMBRE_COLONNES; colonne++ ) {
+
                 System.out.printf(String.valueOf(jeu[ligne][colonne].getPieceName()) + "   ");
             }
             System.out.println("");
@@ -246,11 +234,27 @@ public class Echiquier implements MethodesEchiquier{
         System.out.println("");
     }
 
+    public void resetEchiquier(){
+        //utile pour les testes JUNIT
+        jeu = new Intersection[NOMBRE_LIGNES][NOMBRE_COLONNES];
+        //pour chaque ligne
+        for(int ligne = 0; ligne < NOMBRE_LIGNES; ligne++)
+        {
+            //pour chaque colonne
+            for(int colonne = 0; colonne <NOMBRE_COLONNES;colonne++ )
+            {
+                jeu[ligne][colonne] = new Intersection();
+            }
+        }
+    }
+
 
     public boolean estOccupe(int ligne, int colonne){
         //vérifie si la position est occupé
-        System.out.println("Looking at: "+ligne+", "+colonne+" : occupé -> "+(getIntersection(ligne, colonne).getPiece() != null));
-        return getIntersection(ligne, colonne).getPiece() != null;
+        boolean occupe = getIntersection(ligne, colonne).getPiece() != null;
+        System.out.println("Looking at: "+ligne+", "+colonne+" : occupé -> "+occupe );
+
+        return occupe;
     }
 
     public boolean estOccupe(Position positon){
@@ -265,17 +269,14 @@ public class Echiquier implements MethodesEchiquier{
 
             String couleurAmi = getIntersection(depart).getPiece().getCouleur();
             String couleurPieceArrivee = getIntersection(arrivee).getPiece().getCouleur();
+            boolean memeCouleur = (couleurAmi.equals(couleurPieceArrivee));
 
-            System.out.println("Il y a une pièce à l'arrivée, est-elle ami ("+couleurAmi+")? -> "+(couleurAmi.equals(couleurPieceArrivee)));
+            System.out.println("Pièce détectée est amie ("+couleurAmi+")  -> "+memeCouleur);
             //l'intersection est occupé, retourne true si la piece sur celle-ci N'A PAS la même couleur que la piece en jeu
-            return getIntersection(arrivee).getPiece().getCouleur().equals(couleurAmi);
+            return memeCouleur;
         }
         else
-        {
-            System.out.println("Aucune pièce à l'arrivée");
             return false;
-        }
-
     }
 
     public boolean estOccupeParEnnemi(Position depart, Position arrivee){
@@ -283,10 +284,13 @@ public class Echiquier implements MethodesEchiquier{
         //retourne faux si l'intersection est occupé, sinon vérifie la couleur
         if(estOccupe(arrivee))
         {
-            String couleurEnnemi = getIntersection(depart.getLigne(), depart.getColonne()).getPiece().getCouleur();
-            System.out.println("Cette pièce est-elle ennemi? -> "+!(getIntersection(arrivee).getPiece().getCouleur().equals(couleurEnnemi)));
+            String couleurAmi = getIntersection(depart).getPiece().getCouleur();
+            String couleurPieceArrivee = getIntersection(depart.getLigne(), depart.getColonne()).getPiece().getCouleur();
+            boolean couleurDifferente = (couleurAmi.equals(couleurPieceArrivee));
+
+            System.out.println("Pièce détectée est ennmie ("+couleurAmi+")  -> "+couleurDifferente);
             //l'intersection est occupé, retourne true si la piece sur celle-ci N'A PAS la même couleur que la piece en jeu
-            return !(getIntersection(arrivee).getPiece().getCouleur().equals(couleurEnnemi));
+            return couleurDifferente;
         }
         else
             return false;
