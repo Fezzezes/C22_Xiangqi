@@ -161,14 +161,16 @@ public class Echiquier implements MethodesEchiquier{
         //Une bombarde DOIT avoir une piece dans son chemin pour capturer
         if(pieceDansLeChemin == 1)
         {
-            System.out.println("Il y a-t-il un ennemi capturable par la bombarde? --------> "+estOccupeParEnnemi(depart, arrivee));
-            return estOccupeParEnnemi(depart, arrivee);
+            boolean estEnnemi = estOccupeParEnnemi(depart, arrivee);
+            System.out.println("La bombarde saute une pièce et capture ----> "+estEnnemi );
+            return estEnnemi;
         }
         else
         {
-            System.out.println("La bombarde peut se déplacé? --------> "+(pieceDansLeChemin < 1 && !estOccupe(arrivee)));
+            boolean estVide = !estOccupe(arrivee);
+            System.out.println("La bombarde à le chemin libre ----> "+(pieceDansLeChemin < 1 && estVide));
             //Sinon elle peut seulement ce déplacé sur une intersection vide avec un chemin non-obstrué
-            return pieceDansLeChemin < 1 && !estOccupe(arrivee);
+            return pieceDansLeChemin < 1 && estVide;
         }
     }
 
@@ -271,7 +273,7 @@ public class Echiquier implements MethodesEchiquier{
             String couleurPieceArrivee = getIntersection(arrivee).getPiece().getCouleur();
             boolean memeCouleur = (couleurAmi.equals(couleurPieceArrivee));
 
-            System.out.println("Pièce détectée est amie ("+couleurAmi+")  -> "+memeCouleur);
+            System.out.println("Pièce détectée est amie ("+couleurAmi+") -> "+memeCouleur);
             //l'intersection est occupé, retourne true si la piece sur celle-ci N'A PAS la même couleur que la piece en jeu
             return memeCouleur;
         }
@@ -285,10 +287,10 @@ public class Echiquier implements MethodesEchiquier{
         if(estOccupe(arrivee))
         {
             String couleurAmi = getIntersection(depart).getPiece().getCouleur();
-            String couleurPieceArrivee = getIntersection(depart.getLigne(), depart.getColonne()).getPiece().getCouleur();
-            boolean couleurDifferente = (couleurAmi.equals(couleurPieceArrivee));
+            String couleurPieceArrivee = getIntersection(arrivee).getPiece().getCouleur();
+            boolean couleurDifferente = !(couleurAmi.equals(couleurPieceArrivee));
 
-            System.out.println("Pièce détectée est ennmie ("+couleurAmi+")  -> "+couleurDifferente);
+            System.out.println("Pièce détectée est ennmie ("+couleurAmi+") -> "+couleurDifferente);
             //l'intersection est occupé, retourne true si la piece sur celle-ci N'A PAS la même couleur que la piece en jeu
             return couleurDifferente;
         }
