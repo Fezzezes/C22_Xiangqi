@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import xiangqi.echiquier.Echiquier;
 import xiangqi.piece.Bombarde;
 import xiangqi.piece.Cavalier;
+import xiangqi.piece.Char;
 import xiangqi.piece.Position;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +28,11 @@ public class testMethodeCavalier {
         echiquier.afficher();
     }
 
+    @Test
+    public void testValideDeplacementNULL(){
+        echiquier.getJeu()[2][7].setPiece(new Char("!","noir"));
+        assertEquals(true, echiquier.cheminPossible(new Position(2,7), new Position(2,7)));
+    }
 
     @Test
     public void testValideCavalierHautGauche(){

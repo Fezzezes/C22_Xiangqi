@@ -94,6 +94,14 @@ public class Echiquier implements MethodesEchiquier{
     public boolean cheminPossible(Position depart , Position arrivee){
 
         System.out.println("["+depart.getLigne()+", "+depart.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
+
+        if(depart.equals(arrivee))
+        {
+            System.out.println("Déplacement NULL est valide");
+            return true;
+        }
+
+        //traque le pièce trouvé entre le départ et l'arrivée
         int pieceDansLeChemin = 0;
 
         //si la pièce bouge de |gauche à droite| ou de |droite à gauche| ou |ne bouge pas verticalement|
@@ -124,8 +132,8 @@ public class Echiquier implements MethodesEchiquier{
 
 
         System.out.println("Il y a { "+pieceDansLeChemin+" } pièces ENTRE le départ et l'arrivée");
-        System.out.println("---");
-        System.out.println("Arrivée: ");
+        System.out.println("*** Vérification de l'arrivée ***");
+
 
         //Si il y a exactement une pièce entre la bombarde et son arrivée, vérifié que l'arrivé EST un ennemi
         if(getIntersection(depart).getPiece() instanceof Bombarde)
@@ -169,10 +177,11 @@ public class Echiquier implements MethodesEchiquier{
 
 
     private String cavalierBougeVers(Position depart , Position arrivee){
-        //détermine si une piece avance(true) ou recule(false) du point de vue des noirs
+
         int ligne = Math.abs(depart.getLigne() - arrivee.getLigne());
         int colonne = Math.abs(depart.getColonne() - arrivee.getColonne());
-
+        //si la différence entre les lignes et plus élevé que la différence entre les colonnes, le cavalier initialement bouger de facon verticale
+        //sinon le cavalier bougera horizontalement en premier
         return ligne > colonne? "ligne": "colonne";
     }
 
@@ -194,13 +203,89 @@ public class Echiquier implements MethodesEchiquier{
         return pieceSurPosition(prochainePosition, arrivee,incrLigne, incrColonne, compte);
     }
 
-
-
     @Override
-    public  boolean roisNePouvantPasEtreFaceAFace ( Position depart,Position arrivee ){
-        System.out.println("OVERRIDE THIS");return false;
+    public boolean roisNePouvantPasEtreFaceAFace ( Position depart,Position arrivee ){
+
+        //Un mouvement vertical va toujours bloqué la vue des rois
+        if(depart.getColonne() == arrivee.getColonne())
+            return true;
+
+        //il nous faut la position des rois pour faire nos vérifications et savoir si la piece en jeu est elle-même un roi
+        Position roiNoir = positionDuRoi("noir");
+        Position roiRouge = positionDuRoi("rouge");
+        boolean pieceEstRoi = (getIntersection(depart).getPiece() instanceof Roi);
+
+        if(!pieceEstRoi) {
+            //si la piece en jeu n'est pas sur la colonne des rois, son déplacement n'aura aucun impact
+            //de plus, si les rois ne sont pas sur la même colonne, se teste retournera vrai aussi
+            if(depart.getColonne() != roiNoir.getColonne() || depart.getColonne() != roiRouge.getColonne()) {
+                System.out.println("Les pieces concernées ne sont pas alignées");
+                return true;
+            }
+        }
+
+        //un roi ne peut pas se placer dans ma même colonne que le roi adverse si la colonne est vide
+        //Si la piece en jeu est un roi, on va donner la position d'arrivé au roi concerné pour permettre
+        //à la methode pieceEntreRois() de fonctionné en considérant la position futur du roi au lieu de sa position actuelle
+        if(roiNoir.equals(depart))
+            roiNoir = arrivee;
+        else if(roiRouge.equals(depart))
+            roiRouge = arrivee;
+
+        return pieceEntreRois(roiNoir, roiRouge, pieceEstRoi);
     }
 
+    public Position positionDuRoi(String couleur) {
+
+        int lignePalais = 0;
+        //change la ligne de depart du palais pour scanner le palais rouge
+        if(couleur.equals("rouge")) {
+            lignePalais = 7;
+        }
+
+        //loop au travers du palais et retourne le roi
+        for(int ligne = lignePalais; ligne<lignePalais+3;ligne++) {
+            for(int colonne = 3; colonne < 6; colonne++){
+
+                Position position = new Position(ligne, colonne);
+                //la position est occupé par un roi
+                if(getIntersection(position).getPiece() instanceof Roi) {
+                    System.out.println("Roi a été trouvé sur ["+position.getLigne()+", "+position.getColonne()+"]");
+                    return position;
+                }
+            }
+        }
+
+        System.out.println("PAS DE ROI DANS LE PALAIS?????");
+        return null;
+    }
+
+
+    public boolean pieceEntreRois(Position roi1, Position roi2, boolean estUnRoi) {
+        //les rois ne sont pas sur la même colonne, le teste sera toujours positif
+        //retourne vrai
+        System.out.println("-----");
+        if (roi1.getColonne() != roi2.getColonne()) {
+
+            System.out.println("Les rois ne seront plus sur la même colonne");
+            return true;
+        }
+
+
+        int compte = 0;
+        for (int ligne = roi1.getLigne()+1; ligne < roi2.getLigne(); ligne++) {
+
+            if(estOccupe(ligne, roi1.getColonne()))
+                compte++;
+        }
+
+        //si il y seulement une pièce entre les rois, la piece sur la colonne ne peut pas bouger
+        //si il y aucune pièce sur la colonne, le roi2 ne pourra pas si déplacé
+        //retourne faux
+        System.out.println("La pièce qui se déplace est un roi -> "+estUnRoi);
+        System.out.println("Il y a "+compte+" piece entre les rois");
+        return (compte > 1 && !estUnRoi) || (compte > 0 && estUnRoi);
+    }
 
     //----------------------------------------------------Util---------------------------------------
     public void afficher() {

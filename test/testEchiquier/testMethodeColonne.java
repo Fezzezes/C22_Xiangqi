@@ -24,6 +24,12 @@ public class testMethodeColonne {
 
 
     @Test
+    public void testValideDeplacementNULL(){
+        echiquier.getJeu()[2][7].setPiece(new Char("!","noir"));
+        assertEquals(true, echiquier.cheminPossible(new Position(2,7), new Position(2,7)));
+    }
+
+    @Test
     public void testValideHaut1(){
         echiquier.getJeu()[3][4].setPiece(new Char("!","noir"));
         assertEquals(true, echiquier.cheminPossible(new Position(3,4), new Position(4,4)));

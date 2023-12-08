@@ -29,6 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         //Chemin Ligne droite --------------------------------------------------------------------
 
         @Test
+        public void testValideDeplacementNULL(){
+            echiquier.getJeu()[2][7].setPiece(new Char("!","noir"));
+            assertEquals(true, echiquier.cheminPossible(new Position(2,7), new Position(2,7)));
+        }
+
+        @Test
         public void testValideLigneVersLaDroite1(){
             echiquier.getJeu()[2][7].setPiece(new Char("!","noir"));
             assertEquals(true, echiquier.cheminPossible(new Position(2,7), new Position(2,8)));

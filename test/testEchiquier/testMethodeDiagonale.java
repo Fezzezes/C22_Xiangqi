@@ -25,6 +25,11 @@ public class testMethodeDiagonale {
         echiquier.afficher();
     }
 
+    @Test
+    public void testValideDeplacementNULL(){
+        echiquier.getJeu()[2][7].setPiece(new Char("!","noir"));
+        assertEquals(true, echiquier.cheminPossible(new Position(2,7), new Position(2,7)));
+    }
 
     @Test
     public void testValideBasVersGauche(){
