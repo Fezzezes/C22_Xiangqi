@@ -20,6 +20,7 @@ public class Intersection {
 
     public String getPieceName() {
 
+        //utile pour la fonction d'affichage
         return piece != null?(this.piece.getNom() +this.piece.getCouleurAbrege()): "--";
     }
 

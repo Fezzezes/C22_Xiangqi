@@ -95,8 +95,7 @@ public class Echiquier implements MethodesEchiquier{
 
         System.out.println("["+depart.getLigne()+", "+depart.getColonne()+"] -> ["+arrivee.getLigne()+", "+arrivee.getColonne()+"]");
 
-        if(depart.equals(arrivee))
-        {
+        if(depart.equals(arrivee)) {
             System.out.println("Déplacement NULL est valide");
             return true;
         }
@@ -125,9 +124,8 @@ public class Echiquier implements MethodesEchiquier{
         }
         else {
             //prochaine position dans la chaine a vérifié
-            Position prochainePosition = new Position(depart.getLigne() + incrementeLigne, depart.getColonne() + incrementeColonne);
             //examine de façon recursive chaque intersection ENTRE le point de départ et le point d'arrivée, retourne le compte
-            pieceDansLeChemin += pieceSurPosition(prochainePosition, arrivee, incrementeLigne, incrementeColonne, pieceDansLeChemin);
+            pieceDansLeChemin += pieceSurPosition(depart, arrivee, incrementeLigne, incrementeColonne, pieceDansLeChemin);
         }
 
         System.out.println("Il y a { "+pieceDansLeChemin+" } pièces ENTRE le départ et l'arrivée");
@@ -183,19 +181,20 @@ public class Echiquier implements MethodesEchiquier{
         return ligne > colonne? "ligne": "colonne";
     }
 
-    private int pieceSurPosition(Position actuelle, Position arrivee, int incrLigne, int incrColonne, int compte ){
+    private int pieceSurPosition(Position positionPrecedente, Position arrivee, int incrLigne, int incrColonne, int compte ){
+
+        //CETTE METHODE FONCTIONNE SEULEMENT AVEC DES DÉPLACEMENTS EN LIGNE DROITE (horizontale, verticale ou diagonale)
+        //prochaine position a vérifié
+        Position prochainePosition = new Position(positionPrecedente.getLigne()+incrLigne, positionPrecedente.getColonne()+incrColonne);
 
         //nous sommes arrivées à la dernière position de la chaine recursive
         //retourne le compte de pieces trouvées entre la position de départ et la position d'arrivée
-        if(actuelle.equals(arrivee))
+        if(prochainePosition.equals(arrivee))
             return compte;
 
         //la position actuelle est-elle occupé, si oui ajoute au compte
-        if(estOccupe(actuelle))
+        if(estOccupe(prochainePosition))
             compte++;
-
-        //prochaine position a vérifié
-        Position prochainePosition = new Position(actuelle.getLigne()+incrLigne, actuelle.getColonne()+incrColonne);
 
         //continu recursivement avec la prochaine position
         return pieceSurPosition(prochainePosition, arrivee,incrLigne, incrColonne, compte);
@@ -269,12 +268,8 @@ public class Echiquier implements MethodesEchiquier{
             return true;
         }
 
-        int compte = 0;
-        for (int ligne = roi1.getLigne()+1; ligne < roi2.getLigne(); ligne++) {
-
-            if(estOccupe(ligne, roi1.getColonne()))
-                compte++;
-        }
+        //recycle notre methode pieceSurPosition ENTRE le roi1 et le roi2, incremente la ligne de +1, incremente pas la colonne, le compte commence à zéro
+        int compte = pieceSurPosition(roi1, roi2, 1, 0, 0);
 
         //si il y a seulement une pièce entre les rois, la piece sur la colonne ne peut pas bouger
         //si il y a aucune pièce sur la colonne du roi1, le roi2 ne pourra pas si déplacé
@@ -287,6 +282,7 @@ public class Echiquier implements MethodesEchiquier{
     //----------------------------------------------------Util---------------------------------------
     public void afficher() {
 
+        //utile pour les testes JUNIT
         System.out.printf("    ");
         for(int colonne = 0; colonne < NOMBRE_COLONNES; colonne++ ) {
             System.out.printf(String.valueOf(colonne) + "    ");
