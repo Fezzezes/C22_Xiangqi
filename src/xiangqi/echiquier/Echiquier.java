@@ -75,8 +75,10 @@ public class Echiquier implements MethodesEchiquier{
         for(int colonne = 0; colonne<NOMBRE_COLONNES; colonne+=2)
         {
             jeu[3][colonne].setPiece(new Pion("P","noir"));
-            jeu[6][colonne].setPiece(new Pion("P","noir"));
+            jeu[6][colonne].setPiece(new Pion("P","rouge"));
         }
+
+        afficher();
 
     }
 
@@ -301,7 +303,7 @@ public class Echiquier implements MethodesEchiquier{
         System.out.println("");
     }
 
-    private boolean estOccupe(int ligne, int colonne){
+    public boolean estOccupe(int ligne, int colonne){
         //vérifie si la position est occupé
         boolean occupe = getIntersection(ligne, colonne).getPiece() != null;
         System.out.println("Looking at: "+ligne+", "+colonne+" : occupé -> "+occupe );
@@ -309,9 +311,20 @@ public class Echiquier implements MethodesEchiquier{
         return occupe;
     }
 
-    private boolean estOccupe(Position positon){
+    public boolean estOccupe(Position positon){
         //Je suis tanné de la ligne et la colonne séparé
         return estOccupe(positon.getLigne(), positon.getColonne());
+    }
+
+    public boolean estOccupeParCouleur(Position position, String couleur){
+
+        //retourne false pour une piece null
+        if(!estOccupe(position))
+            return false;
+
+        System.out.println("Pièce détectée est-elle ["+couleur+"] -> "+getIntersection(position).getPiece().getCouleur()+" :"+couleur.equals(getIntersection(position).getPiece().getCouleur()));
+        //vérifie la couleur de la piece trouver
+        return couleur.equals(getIntersection(position).getPiece().getCouleur());
     }
 
     private boolean estOccupeParAmi(Position depart, Position arrivee){
@@ -331,7 +344,7 @@ public class Echiquier implements MethodesEchiquier{
             return false;
     }
 
-    private boolean estOccupeParEnnemi(Position depart, Position arrivee){
+    public boolean estOccupeParEnnemi(Position depart, Position arrivee){
 
         //retourne faux si l'intersection est occupé, sinon vérifie la couleur
         if(estOccupe(arrivee))

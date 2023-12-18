@@ -103,5 +103,5 @@ public abstract class Piece {
     public String getCouleurAbrege(){
         return this.couleur.equals("noir")? "n":"r";
     }
-
+    public String getNomComplet(){return this.nom + " "+ this.couleur;}
 }

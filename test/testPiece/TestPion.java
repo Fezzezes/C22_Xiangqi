@@ -22,7 +22,7 @@ public class TestPion {
 
     @Test
     public void deplacamentValideSurPlace(){
-        assertEquals(true, noir.estValide(new Position(9,8),new Position(9,8)));
+        assertEquals(true, rouge.estValide(new Position(6,4),new Position(6,4)));
     }
     @Test
     public void deplacamentValideAvanceAvantRiviereNoir(){

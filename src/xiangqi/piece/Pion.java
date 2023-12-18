@@ -13,6 +13,10 @@ public class Pion extends Piece{
     //•	De l’autre côté de la rivière, il peut avancer d’une intersection à la fois en ligne droite ou sur les côtés
     //•	Il ne peut pas reculer contrairement aux autres pièces
 
+        //un mouvement sur place est valide
+        if(depart.equals(arrivee))
+            return true;
+
         //un pion peut seulement avancer de '1'(ou sur place)
         if(norme(depart, arrivee) > 1 )
             return false;
