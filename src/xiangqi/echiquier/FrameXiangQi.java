@@ -311,7 +311,7 @@ public class FrameXiangQi extends JFrame {
 					System.out.println("Le joueur tente de déplacé:"+pieceTampon.getNomComplet()+" vers ["+ligneClic+", "+colonneClic+"]");
 					//Ceci sera la position d'arrivée
 					arrivee = positionClic;
-
+					boolean roiCapture = false;
 					//Vérifions si le déplacement est valide:
 					if(pieceTampon.estValide(depart, arrivee) && echiquier.cheminPossible(depart, arrivee) && echiquier.roisNePouvantPasEtreFaceAFace(depart, arrivee)) {
 
@@ -321,14 +321,24 @@ public class FrameXiangQi extends JFrame {
 						//faut-il capturé avant de se déplacé?
 						if(echiquier.estOccupeParEnnemi(depart, arrivee))
 						{
+							roiCapture = echiquier.getIntersection(arrivee).getPiece() instanceof Roi;
 							//capture avant de bouger
 							executeCapture();
 						}
 						//Fait le déplacement
 						executeDeplacement();
 
+						//si la piece capturé est le roi, termine la partie
+						if(roiCapture)
+						{
+							//informe le joueur que c'est fini
+							System.out.println("Le joueur "+couleurControle+" a gagné! ");
+							labelCouleur.setText("Le joueur "+ couleurControle+ " a gagné!");
+							//bloc tous les déplacements en changeant la couleur de controle à une couleur invalide
+							couleurControle = "QUE PERSONNE NE BOUGE CECI EST UNE SCÈNE DE CRIME";
+						}
 						//pas la meme position? alternons de joueur, sinon le joueur à simplement annulé son déplacement
-						if(!depart.equals(arrivee))
+						else if(!depart.equals(arrivee))
 							alterne();
 
 						//reset la piece tampon,
@@ -364,23 +374,9 @@ public class FrameXiangQi extends JFrame {
 			else
 				panelRouges.add(new JLabel((ImageIcon)grille[ligneClic][colonneClic].getIcon()));
 
-			//la piece est un roi! C'est fini
-			boolean roiMort = echiquier.getIntersection(arrivee).getPiece() instanceof Roi;
-
 			//retire la piece capturer de l'échiquier
 			grille[ligneClic][colonneClic].setIcon(null);
 			echiquier.getIntersection(arrivee).setPiece(null);
-
-			if(roiMort)
-			{
-				//si la piece capturé est le roi, termine la partie
-				//informe le joueur que c'est fini
-				System.out.println("Le joueur "+couleurControle+" a gagné! ");
-
-				//bloc tous les dépaclements
-				couleurControle = "QUE PERSONNE NE BOUGE CECI EST UNE SCÈNE DE CRIME";
-			}
-
 
 		}
 	}
