@@ -68,7 +68,7 @@ public abstract class Piece {
 
     //----------------------------------------------------Util---------------------------------------
 
-    public boolean estDansPalais(Position arrivee){
+    protected boolean estDansPalais(Position arrivee){
         //Retourne Faux si le déplacement n'est pas dans le palais
 
         System.out.println("Couleur: "+this.getCouleur());
@@ -89,7 +89,7 @@ public abstract class Piece {
             return true;
     }
 
-    public boolean traverseLaRiviere(Position arrivee){
+    protected boolean traverseLaRiviere(Position arrivee){
 
         //La rivière ne peut être traversé, dependant de la couleur
         if(this.getCouleur().equals("noir") && arrivee.getLigne() > 4)

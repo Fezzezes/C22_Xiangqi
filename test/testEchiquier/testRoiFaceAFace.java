@@ -96,6 +96,15 @@ public class testRoiFaceAFace {
     }
 
     @Test
+    public void testValidePieceSeuleMouvementVerticale(){
+        echiquier.getJeu()[1][5].setPiece(roiNoir);
+        echiquier.getJeu()[5][5].setPiece(new Pion("!","noir"));
+        echiquier.getJeu()[8][5].setPiece(roiRouge);
+        assertEquals(true, echiquier.roisNePouvantPasEtreFaceAFace(new Position(5,5), new Position(4,5)));
+    }
+
+
+    @Test
     public void testInvalideLePionBloqueLaVueDesRois()
     {
         echiquier.getJeu()[0][4].setPiece(roiNoir);

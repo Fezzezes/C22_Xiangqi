@@ -216,6 +216,10 @@ public class Echiquier implements MethodesEchiquier{
             if(depart.getColonne() != positionRoiNoir.getColonne() || depart.getColonne() != positionRoiRouge.getColonne()) {
                 System.out.println("Les pieces concernées ne sont pas alignées");
                 return true;
+
+            } else if (depart.getColonne() == arrivee.getColonne()) {
+                System.out.println("Tous mouvement verticale d'une pièce qui N'EST PAS roi sera valide");
+                return true;
             }
         }
 
