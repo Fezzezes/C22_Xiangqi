@@ -204,20 +204,16 @@ public class Echiquier implements MethodesEchiquier{
 
     @Override
     public boolean roisNePouvantPasEtreFaceAFace ( Position depart,Position arrivee ){
-
-        //Un mouvement vertical va toujours bloqué la vue des rois
-        if(depart.getColonne() == arrivee.getColonne())
-            return true;
-
+        
         //il nous faut la position des rois pour faire nos vérifications et savoir si la piece en jeu est elle-même un roi
-        Position roiNoir = positionDuRoi("noir");
-        Position roiRouge = positionDuRoi("rouge");
+        Position positionRoiNoir = positionDuRoi("noir");
+        Position positionRoiRouge = positionDuRoi("rouge");
         boolean pieceEstRoi = (getIntersection(depart).getPiece() instanceof Roi);
 
         if(!pieceEstRoi) {
             //si la piece en jeu n'est pas sur la colonne des rois, son déplacement n'aura aucun impact
             //de plus, si les rois ne sont pas sur la même colonne, se teste retournera vrai aussi
-            if(depart.getColonne() != roiNoir.getColonne() || depart.getColonne() != roiRouge.getColonne()) {
+            if(depart.getColonne() != positionRoiNoir.getColonne() || depart.getColonne() != positionRoiRouge.getColonne()) {
                 System.out.println("Les pieces concernées ne sont pas alignées");
                 return true;
             }
@@ -226,12 +222,12 @@ public class Echiquier implements MethodesEchiquier{
         //un roi ne peut pas se placer dans ma même colonne que le roi adverse si la colonne est vide
         //Si la piece en jeu est un roi, on va donner la position d'arrivé au roi concerné pour permettre
         //à la methode pieceEntreRois() de fonctionné en considérant la position futur du roi au lieu de sa position actuelle
-        if(roiNoir.equals(depart))
-            roiNoir = arrivee;
-        else if(roiRouge.equals(depart))
-            roiRouge = arrivee;
+        if(positionRoiNoir.equals(depart))
+            positionRoiNoir = arrivee;
+        else if(positionRoiRouge.equals(depart))
+            positionRoiRouge= arrivee;
 
-        return pieceEntreRois(roiNoir, roiRouge, pieceEstRoi);
+        return pieceEntreRois(positionRoiNoir, positionRoiRouge, pieceEstRoi);
     }
 
     private Position positionDuRoi(String couleur) {

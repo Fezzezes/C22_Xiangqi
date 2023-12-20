@@ -144,9 +144,25 @@ public class testRoiFaceAFace {
     public void testInvalideDiagonaleDevantPion(){
         echiquier.getJeu()[1][5].setPiece(roiNoir);
         echiquier.getJeu()[1][4].setPiece(new Pion("P","noir"));
-        echiquier.getJeu()[8][5].setPiece(new Pion("X","rouge"));
+        echiquier.getJeu()[8][5].setPiece(new Pion("?","rouge"));
         echiquier.getJeu()[8][4].setPiece(new Roi("!","rouge"));
         assertEquals(false, echiquier.roisNePouvantPasEtreFaceAFace(new Position(8,4), new Position(7,5)));
+    }
+
+    @Test
+    public void testInvalideRoiRougeCaptureLaSeulePieceDeLaColonne(){
+        echiquier.getJeu()[1][5].setPiece(roiNoir);
+        echiquier.getJeu()[7][5].setPiece(new Pion("?","noir"));
+        echiquier.getJeu()[8][5].setPiece(new Roi("!","rouge"));
+        assertEquals(false, echiquier.roisNePouvantPasEtreFaceAFace(new Position(8,5), new Position(7,5)));
+    }
+
+    @Test
+    public void testInvalideRoiNoirCaptureLaSeulePieceDeLaColonne(){
+        echiquier.getJeu()[8][5].setPiece(roiRouge);
+        echiquier.getJeu()[1][5].setPiece(new Pion("?","noir"));
+        echiquier.getJeu()[0][5].setPiece(new Roi("!","rouge"));
+        assertEquals(false, echiquier.roisNePouvantPasEtreFaceAFace(new Position(0,5), new Position(1,5)));
     }
 }
 

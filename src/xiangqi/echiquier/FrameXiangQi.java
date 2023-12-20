@@ -20,6 +20,8 @@ public class FrameXiangQi extends JFrame {
 	Ecouteur ec;
 	Echiquier echiquier; //Échiquier faisant le lien avec la logique du jeu
 
+
+	JTextField commandPanel;
 	/**
 	 * Launch the application.
 	 */
@@ -114,11 +116,12 @@ public class FrameXiangQi extends JFrame {
 		boutonDebuter.setOpaque(true);
 		panelControle.add(boutonDebuter);
 		boutonDebuter.setFont(new Font("Tahoma", Font.BOLD, 15));
+
 		labelCouleur = new JLabel("");
 		labelCouleur.setBackground(new Color(255, 239, 213));
 		labelCouleur.setOpaque(true);
 		labelCouleur.setBounds(53, 11, 475, 41);
-		
+
 		panelControle.add(labelCouleur);
 		labelCouleur.setFont(new Font("Tahoma", Font.BOLD, 20));
 
@@ -291,7 +294,6 @@ public class FrameXiangQi extends JFrame {
 						//si oui, on la prend en main (sauvegarde la piece et son graphique)
 						pieceTampon = piece;
 						iconeTampon = (ImageIcon)grille[ligneClic][colonneClic].getIcon();
-
 						//et on retire le graphique
 						grille[ligneClic][colonneClic].setIcon(null);
 						System.out.println(piece.getNomComplet()+" maintenant en main du joueur.");
